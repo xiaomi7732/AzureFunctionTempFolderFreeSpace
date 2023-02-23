@@ -27,6 +27,18 @@ namespace AzureFunctionTempFolderFreeSpace
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
             response.WriteString($"Get temp folder available space by managed API: {managedAPIResult} and by native API: {nativeAPIResult}.");
+
+            string homeFolderVariable = @"%HOME%";
+            string homeFolder = Environment.ExpandEnvironmentVariables(homeFolderVariable);
+            if (string.Equals(homeFolderVariable, homeFolder))
+            {
+                response.WriteString("No home env var.");
+            }
+            else
+            {
+                response.WriteString(Environment.NewLine + $"Get %HOME% folder available space by managed API: {GetByDotnetAPI(homeFolder)} and by native API: {GetByPInvoke(homeFolder)}.");
+            }
+
             return response;
         }
 
